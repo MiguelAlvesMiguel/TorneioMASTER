@@ -22,7 +22,7 @@ namespace Torneios
       {
          bool handled;
 
-         if (char.IsLetter(e.KeyChar) || e.KeyChar == '-' || e.KeyChar == (char)Keys.Space)
+         if (char.IsLetter(e.KeyChar) || e.KeyChar == '-' || e.KeyChar == (char)Keys.Space || e.KeyChar == (char) Keys.Delete || e.KeyChar == (char) 8)
             handled = false;
          else
             handled = true;
@@ -36,6 +36,16 @@ namespace Torneios
          else
             return 1;
       }
+       public void ValInserir()
+      {
+         if (txtNome.Text != "" && txtApelido.Text != "")  //Se as textbox's tiverem as 2 preenchidas
+            if (numDistancia.ReadOnly == false || numTempo.ReadOnly == false)
+            {
+               btnInserir.Enabled = true;
+               return;
+            }
+         btnInserir.Enabled = false;        
+      }
       //Fim das Funções
 
       private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
@@ -47,8 +57,8 @@ namespace Torneios
          e.Handled = TextBoxVal(e);
       }
       private void cbbProva_SelectedIndexChanged(object sender, EventArgs e)
-      {
-         if(EntreAB(cbbProva.SelectedIndex,0,3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)
+      {       
+         if (EntreAB(cbbProva.SelectedIndex,0,3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)
          {
             numTempo.ReadOnly = false;
             numDistancia.Value = 0;
@@ -60,6 +70,22 @@ namespace Torneios
             numTempo.Value = 0;
             numTempo.ReadOnly = true;
          }
+            ValInserir(); 
+      }
+
+      private void txtNome_TextChanged(object sender, EventArgs e)
+      {
+         ValInserir();
+      }
+
+      private void txtApelido_TextChanged(object sender, EventArgs e)
+      {
+         ValInserir();
+      }
+
+      private void cbbProva_SelectedValueChanged(object sender, EventArgs e)
+      {
+         ValInserir();
       }
    }
 }
