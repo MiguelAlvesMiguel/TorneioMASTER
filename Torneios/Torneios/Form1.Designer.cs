@@ -97,20 +97,21 @@
          this.cbbProva.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
          this.cbbProva.FormattingEnabled = true;
          this.cbbProva.Items.AddRange(new object[] {
-            " Corrida 100 Metros",
+            "Corrida 100 Metros",
+            "Corrida 400 Metros",
+            "Corrida 1500 Metros",
+            "Corrida 110 metros Barreiras",
             "Salto em Comprimento",
             "Lançamento Do Peso",
             "Salto em Altura",
-            "Corrida 400 Metros",
-            "Corrida 110 metros Barreiras",
             "Lançamento do Disco",
             "Salto com Vara",
-            "Lançamento do Dardo",
-            "Corrida 1500 Metros"});
+            "Lançamento do Dardo"});
          this.cbbProva.Location = new System.Drawing.Point(279, 30);
          this.cbbProva.Name = "cbbProva";
          this.cbbProva.Size = new System.Drawing.Size(193, 21);
          this.cbbProva.TabIndex = 2;
+         this.cbbProva.SelectedIndexChanged += new System.EventHandler(this.cbbProva_SelectedIndexChanged);
          // 
          // numDistancia
          // 
