@@ -28,6 +28,8 @@
       /// </summary>
       private void InitializeComponent()
       {
+         this.components = new System.ComponentModel.Container();
+         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
          this.txtNome = new System.Windows.Forms.TextBox();
          this.label1 = new System.Windows.Forms.Label();
          this.txtApelido = new System.Windows.Forms.TextBox();
@@ -52,6 +54,8 @@
          this.label3 = new System.Windows.Forms.Label();
          this.label4 = new System.Windows.Forms.Label();
          this.label5 = new System.Windows.Forms.Label();
+         this.imgListTreeView = new System.Windows.Forms.ImageList(this.components);
+         this.toolTipScore = new System.Windows.Forms.ToolTip(this.components);
          ((System.ComponentModel.ISupportInitialize)(this.numDistancia)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.numTempo)).BeginInit();
          this.grbVista.SuspendLayout();
@@ -168,6 +172,7 @@
          this.btnInserir.TabIndex = 4;
          this.btnInserir.Text = "Inserir";
          this.btnInserir.UseVisualStyleBackColor = true;
+         this.btnInserir.Click += new System.EventHandler(this.btnInserir_Click);
          // 
          // btnEliminar
          // 
@@ -216,10 +221,14 @@
          // 
          // tvwProvas
          // 
+         this.tvwProvas.ImageIndex = 0;
+         this.tvwProvas.ImageList = this.imgListTreeView;
          this.tvwProvas.Location = new System.Drawing.Point(27, 132);
          this.tvwProvas.Name = "tvwProvas";
+         this.tvwProvas.SelectedImageIndex = 0;
          this.tvwProvas.Size = new System.Drawing.Size(229, 322);
          this.tvwProvas.TabIndex = 6;
+         this.tvwProvas.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.tvwProvas_NodeMouseHover);
          // 
          // lsvBoard
          // 
@@ -301,6 +310,17 @@
          this.label5.TabIndex = 1;
          this.label5.Text = "Tempo";
          // 
+         // imgListTreeView
+         // 
+         this.imgListTreeView.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgListTreeView.ImageStream")));
+         this.imgListTreeView.TransparentColor = System.Drawing.Color.Transparent;
+         this.imgListTreeView.Images.SetKeyName(0, "clock.png");
+         this.imgListTreeView.Images.SetKeyName(1, "location.png");
+         this.imgListTreeView.Images.SetKeyName(2, "First.png");
+         this.imgListTreeView.Images.SetKeyName(3, "Second.png");
+         this.imgListTreeView.Images.SetKeyName(4, "third.png");
+         this.imgListTreeView.Images.SetKeyName(5, "poop.png");
+         // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -360,6 +380,8 @@
       private System.Windows.Forms.Label label3;
       private System.Windows.Forms.Label label4;
       private System.Windows.Forms.Label label5;
+      private System.Windows.Forms.ImageList imgListTreeView;
+      private System.Windows.Forms.ToolTip toolTipScore;
    }
 }
 
