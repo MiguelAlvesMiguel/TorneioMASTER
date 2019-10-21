@@ -36,7 +36,7 @@ namespace Torneios
          else
             return 1;
       }
-       public void ValInserir()
+       public void ValBtnInserir()
       {
          if (txtNome.Text != "" && txtApelido.Text != "")  //Se as textbox's tiverem as 2 preenchidas
             if (numDistancia.ReadOnly == false || numTempo.ReadOnly == false)
@@ -46,103 +46,130 @@ namespace Torneios
             }
          btnInserir.Enabled = false;        
       }
-       
-        public int TipoProva()
-        {
-            if (cbbProva.Text.IndexOf("Corrida") != -1)
-            {
-                return 0;
-            }
+       public int IsInList()
+      {
+         foreach (TreeNode Parent in tvwProvas.Nodes)
+            if (Parent.Text == cbbProva.SelectedItem.ToString())
+               foreach (TreeNode Child in Parent.Nodes)
+                  if (Child.Text == (txtNome.Text + " " + txtApelido.Text))
+                     return 1;
 
-            if (cbbProva.Text.IndexOf("Salto") != -1)
-            {
-                return 1;
-            }
-
-            if (cbbProva.Text.IndexOf("Lançamento") != -1)
-            {
-                return 2;
-            }
-            return -1;
-        }
-
-        public int CalcPontos (int idxProva, double P)
-        {
-            double A = 0, B = 0, C = 0;
-
-            switch (idxProva)
-            {
-                case 0: //Corrida 100m
-                    A = 25.4347;
-                    B = 18;
-                    C = 1.81;
-
-                    break;
-                case 1: //Corrida 400m
-                    A = 1.53775;
-                    B = 82;
-                    C = 1.81;
-
-                    break;
-                case 2: //Corrida 1500m
-                    A = 0.03768;
-                    B = 480;
-                    C = 1.85;
-
-                    break;
-                case 3: //Corrida 110m barreiras
-                    A = 5.74352;
-                    B = 28.5;
-                    C = 1.92;
-
-                    break;
-                case 4: //Salto em Comprimento
-                    A = 0.14354;
-                    B = 220;
-                    C = 1.4;
-                    P *= 100;
-                    break;
-                case 5: //Lançamento do peso
-                    A = 51.39;
-                    B = 1.5;
-                    C = 1.05;
-
-                    break;
-                case 6: //Salto em Altura 
-                    A = 0.8465;
-                    B = 75;
-                    C = 1.42;
-                    P *= 100;
-                    break;
-                case 7: //Lançamento do disco
-                    A = 12.91;
-                    B = 4;
-                    C = 1.1;
-
-                    break;
-                case 8: //Salto com Vara
-                    A = 0.2797;
-                    B = 100;
-                    C = 1.35;
-                    P *= 100;
-                    break;
-                case 9: //Lançamento do dardo
-                    A = 10.14;
-                    B = 7;
-                    C = 1.08;
-
-                    break;
-            }
-            if (P == -1)
-                return 0;
+         return 0;
+      }
+       public TreeNode ProcProva()
+      {
+         foreach (TreeNode Parent in tvwProvas.Nodes)         
+            if (Parent.Text == cbbProva.SelectedItem.ToString())
+               return Parent;
+         
+         return null;
+      }
+       public void GetClassifications()
+      {
+         bool BiggerWins;
+         TreeNode First,Second,Third;
+         First = Second = Third = new TreeNode();
+         double firstN, secondN, thirdN,FilhoN ;
+        
+         foreach (TreeNode Pai in tvwProvas.Nodes)
+         {
+            if (Pai.ImageIndex == 0)
+               BiggerWins = false;
             else
+               BiggerWins = true;
+            foreach(TreeNode Filho in Pai.Nodes)
             {
-                if (idxProva <=3 )
-                    return (int)(A * Math.Pow(B - P, C));
-                else
-                    return (int)(A * Math.Pow(P - B, C));
+               if (BiggerWins == true)
+               {
+                  First.Tag = Second.Tag = Third.Tag = -2;
+
+                  firstN = Convert.ToDouble(First.Tag);
+                  secondN = Convert.ToDouble(Second.Tag);
+                  thirdN = Convert.ToDouble(Third.Tag);
+                  FilhoN = Convert.ToDouble(Filho.Tag);
+
+
+                  if (FilhoN > firstN)
+                  {
+                     Second = First;
+                     First = Filho;
+                     firstN = Convert.ToDouble(First.Tag);
+                     secondN = Convert.ToDouble(Second.Tag);
+                  }
+                  if (FilhoN > secondN && FilhoN < firstN)
+                  {
+                     Third = Second;
+                     Second = Filho;
+                     secondN = Convert.ToDouble(Second.Tag);
+                     thirdN = Convert.ToDouble(Third.Tag);
+                  }
+
+                  if (FilhoN > thirdN && FilhoN < secondN)
+                  { 
+                     Third = Filho;
+                     thirdN = Convert.ToDouble(Third.Tag);
+                   }
+
             }
-        }
+                  else
+               {
+
+                  First.Tag = Second.Tag = Third.Tag = 1000;
+
+                  firstN = Convert.ToDouble(First.Tag);
+                  secondN = Convert.ToDouble(Second.Tag);
+                  thirdN = Convert.ToDouble(Third.Tag);
+                  FilhoN = Convert.ToDouble(Filho.Tag);
+
+
+                  if (FilhoN < firstN)    //MUDAR OS SINAIS AQUI
+                  {
+                     Second = First;
+                     First = Filho;
+                     firstN = Convert.ToDouble(First.Tag);
+                     secondN = Convert.ToDouble(Second.Tag);
+                  }
+                  if (FilhoN < secondN && FilhoN > firstN)
+                  {
+                     Third = Second;
+                     Second = Filho;
+                     secondN = Convert.ToDouble(Second.Tag);
+                     thirdN = Convert.ToDouble(Third.Tag);
+                  }
+
+                  if (FilhoN < thirdN && FilhoN > secondN)
+                  {
+                     Third = Filho;
+                     thirdN = Convert.ToDouble(Third.Tag);
+                  }
+               }
+
+            }
+            //Atribuir Medalhas (Imagens)   //2 , 3 , 4 e 5
+            foreach (TreeNode Filho in Pai.Nodes)
+               if (Filho == First)
+               {
+                  Filho.ImageIndex = 2;
+                  Filho.SelectedImageIndex = 2;
+                     }
+               else if (Filho == Second) { 
+                  Filho.ImageIndex = 3;
+                  Filho.SelectedImageIndex = 3;
+                     }
+               else if (Filho == Third) { 
+                  Filho.ImageIndex = 4;
+                  Filho.SelectedImageIndex = 4;
+                     }
+               else
+               { 
+                  Filho.ImageIndex = 5;
+                  Filho.SelectedImageIndex = 5;
+                     }
+         
+         }
+
+
+      }
       //Fim das Funções
 
       private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
@@ -167,22 +194,82 @@ namespace Torneios
             numTempo.Value = 0;
             numTempo.ReadOnly = true;
          }
-            ValInserir(); 
+            ValBtnInserir(); 
       }
+
 
       private void txtNome_TextChanged(object sender, EventArgs e)
       {
-         ValInserir();
+         ValBtnInserir();
       }
 
       private void txtApelido_TextChanged(object sender, EventArgs e)
       {
-         ValInserir();
+         ValBtnInserir();
       }
 
       private void cbbProva_SelectedValueChanged(object sender, EventArgs e)
       {
-         ValInserir();
+         ValBtnInserir();
+      }
+
+      private void btnInserir_Click(object sender, EventArgs e)
+      {
+         TreeNode provaNova = new TreeNode(),
+                  pessoa = new TreeNode(),
+                  prova = new TreeNode();
+                  
+
+         if (IsInList()==1)
+         {
+            MessageBox.Show("Esse Registo já existe!", "ERRO",MessageBoxButtons.OK);
+            return;
+         }
+         if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)        
+            pessoa.Tag = numTempo.Value;
+         else
+            pessoa.Tag = numDistancia.Value;
+
+
+            pessoa.Text = txtNome.Text + " " + txtApelido.Text;
+         
+
+         if( (prova = ProcProva() ) == null ) //Se não for encontrada a modalidade selecionada
+         {
+            provaNova.Text = cbbProva.SelectedItem.ToString();
+
+            if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)        
+            {
+               provaNova.ImageIndex = 0;
+               provaNova.SelectedImageIndex = 0;
+            }
+            else
+            {
+               provaNova.ImageIndex = 1;
+               provaNova.SelectedImageIndex = 1;
+            }
+            tvwProvas.Nodes.Add(provaNova);
+            provaNova.Nodes.Add(pessoa);
+         }
+         else         
+            prova.Nodes.Add(pessoa);
+
+         GetClassifications();
+      }
+
+      private void tvwProvas_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
+      {
+         
+            var node = sender as TreeNode;   // O node que deu origem ao evento como TreeNode
+
+            if (e.Node.Nodes.Count > 0)
+               return;
+            else
+            {
+               e.Node.ToolTipText = e.Node.Tag.ToString();
+               toolTipScore.Show(e.Node.Tag.ToString(), tvwProvas);
+            }
+         
       }
 
         private void BtnInserir_Click(object sender, EventArgs e)
