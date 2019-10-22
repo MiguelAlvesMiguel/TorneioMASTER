@@ -170,6 +170,101 @@ namespace Torneios
 
 
       }
+       public int TipoProva()
+      {
+         if (cbbProva.Text.IndexOf("Corrida") != -1)
+         {
+            return 0;
+         }
+
+         if (cbbProva.Text.IndexOf("Salto") != -1)
+         {
+            return 1;
+         }
+
+         if (cbbProva.Text.IndexOf("Lançamento") != -1)
+         {
+            return 2;
+         }
+         return -1;
+      }
+       public int CalcPontos(int idxProva, double P)
+      {
+         double A = 0, B = 0, C = 0;
+
+         switch (idxProva)
+         {
+            case 0: //Corrida 100m
+               A = 25.4347;
+               B = 18;
+               C = 1.81;
+
+               break;
+            case 1: //Corrida 400m
+               A = 1.53775;
+               B = 82;
+               C = 1.81;
+
+               break;
+            case 2: //Corrida 1500m
+               A = 0.03768;
+               B = 480;
+               C = 1.85;
+
+               break;
+            case 3: //Corrida 110m barreiras
+               A = 5.74352;
+               B = 28.5;
+               C = 1.92;
+
+               break;
+            case 4: //Salto em Comprimento
+               A = 0.14354;
+               B = 220;
+               C = 1.4;
+               P *= 100;
+               break;
+            case 5: //Lançamento do peso
+               A = 51.39;
+               B = 1.5;
+               C = 1.05;
+
+               break;
+            case 6: //Salto em Altura 
+               A = 0.8465;
+               B = 75;
+               C = 1.42;
+               P *= 100;
+               break;
+            case 7: //Lançamento do disco
+               A = 12.91;
+               B = 4;
+               C = 1.1;
+
+               break;
+            case 8: //Salto com Vara
+               A = 0.2797;
+               B = 100;
+               C = 1.35;
+               P *= 100;
+               break;
+            case 9: //Lançamento do dardo
+               A = 10.14;
+               B = 7;
+               C = 1.08;
+
+               break;
+         }
+         if (P == -1)
+            return 0;
+         else
+         {
+            if (idxProva <= 3)
+               return (int)(A * Math.Pow(B - P, C));
+            else
+               return (int)(A * Math.Pow(P - B, C));
+         }
+      }
       //Fim das Funções
 
       private void txtNome_KeyPress(object sender, KeyPressEventArgs e)

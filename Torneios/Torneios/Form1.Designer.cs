@@ -255,7 +255,6 @@
          this.lsvBoard.TabIndex = 7;
          this.lsvBoard.UseCompatibleStateImageBehavior = false;
          this.lsvBoard.View = System.Windows.Forms.View.Details;
-         this.lsvBoard.SelectedIndexChanged += new System.EventHandler(this.lsvBoard_SelectedIndexChanged);
          // 
          // Atleta
          // 
