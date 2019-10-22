@@ -272,9 +272,69 @@ namespace Torneios
          
       }
 
-      private void lsvBoard_SelectedIndexChanged(object sender, EventArgs e)
-      {
+        private void BtnInserir_Click(object sender, EventArgs e)
+        {
 
-      }
-   }
+            // 4. Inserir na list view
+
+            //Atleta
+            ListViewItem lvi = new ListViewItem();
+
+            lvi.Text = txtNome.Text + ' ' + txtApelido.Text;
+
+            //Prova
+            ListViewItem.ListViewSubItem lvsi = new ListViewItem.ListViewSubItem();
+
+            lvsi.Text = cbbProva.Text;
+            lvi.SubItems.Add(lvsi);
+
+            //Marca
+            lvsi = new ListViewItem.ListViewSubItem();
+
+            switch (TipoProva())
+            {
+                case 0:
+                    double tempo = Convert.ToDouble(numTempo.Value);
+                    if (tempo >= 60)
+                    {
+                        int min = (int)tempo / 60;
+                        tempo -= min*60;
+                        lvsi.Text = min.ToString() + ':';
+                    }
+                    lvsi.Text += tempo.ToString() + " s";
+                    break;
+                case 1:
+                case 2:
+                    lvsi.Text = numDistancia.Value.ToString() + " m";
+                    break;
+                default:
+                    break;
+            }
+
+            if (lvsi.Text.Equals("-1 s") == true)
+            lvsi.Text = "Inválido";
+
+            lvi.SubItems.Add(lvsi);
+
+            //Pontos
+            lvsi = new ListViewItem.ListViewSubItem();
+
+            double P;
+            if (TipoProva() == 0)
+            {
+                P = (double)numTempo.Value;
+            }
+            else
+            {
+                P = (double)numDistancia.Value;
+            }
+            lvsi.Text = Convert.ToString(CalcPontos(cbbProva.SelectedIndex, P));
+           
+            lvi.SubItems.Add(lvsi);
+
+            //Somatório
+
+            lsvBoard.Items.Add(lvi);
+         }
+    }
 }
