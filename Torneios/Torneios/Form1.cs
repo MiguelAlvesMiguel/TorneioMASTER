@@ -271,5 +271,10 @@ namespace Torneios
             }
          
       }
+
+      private void lsvBoard_SelectedIndexChanged(object sender, EventArgs e)
+      {
+
+      }
    }
 }

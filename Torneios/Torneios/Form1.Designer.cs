@@ -44,6 +44,7 @@
          this.rdbÍcones = new System.Windows.Forms.RadioButton();
          this.rdbDetalhes = new System.Windows.Forms.RadioButton();
          this.tvwProvas = new System.Windows.Forms.TreeView();
+         this.imgListTreeView = new System.Windows.Forms.ImageList(this.components);
          this.lsvBoard = new System.Windows.Forms.ListView();
          this.Atleta = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
          this.Prova = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -54,7 +55,6 @@
          this.label3 = new System.Windows.Forms.Label();
          this.label4 = new System.Windows.Forms.Label();
          this.label5 = new System.Windows.Forms.Label();
-         this.imgListTreeView = new System.Windows.Forms.ImageList(this.components);
          this.toolTipScore = new System.Windows.Forms.ToolTip(this.components);
          ((System.ComponentModel.ISupportInitialize)(this.numDistancia)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.numTempo)).BeginInit();
@@ -230,6 +230,17 @@
          this.tvwProvas.TabIndex = 6;
          this.tvwProvas.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.tvwProvas_NodeMouseHover);
          // 
+         // imgListTreeView
+         // 
+         this.imgListTreeView.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgListTreeView.ImageStream")));
+         this.imgListTreeView.TransparentColor = System.Drawing.Color.Transparent;
+         this.imgListTreeView.Images.SetKeyName(0, "clock.png");
+         this.imgListTreeView.Images.SetKeyName(1, "location.png");
+         this.imgListTreeView.Images.SetKeyName(2, "First.png");
+         this.imgListTreeView.Images.SetKeyName(3, "Second.png");
+         this.imgListTreeView.Images.SetKeyName(4, "third.png");
+         this.imgListTreeView.Images.SetKeyName(5, "poop.png");
+         // 
          // lsvBoard
          // 
          this.lsvBoard.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -244,6 +255,7 @@
          this.lsvBoard.TabIndex = 7;
          this.lsvBoard.UseCompatibleStateImageBehavior = false;
          this.lsvBoard.View = System.Windows.Forms.View.Details;
+         this.lsvBoard.SelectedIndexChanged += new System.EventHandler(this.lsvBoard_SelectedIndexChanged);
          // 
          // Atleta
          // 
@@ -309,17 +321,6 @@
          this.label5.Size = new System.Drawing.Size(40, 13);
          this.label5.TabIndex = 1;
          this.label5.Text = "Tempo";
-         // 
-         // imgListTreeView
-         // 
-         this.imgListTreeView.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgListTreeView.ImageStream")));
-         this.imgListTreeView.TransparentColor = System.Drawing.Color.Transparent;
-         this.imgListTreeView.Images.SetKeyName(0, "clock.png");
-         this.imgListTreeView.Images.SetKeyName(1, "location.png");
-         this.imgListTreeView.Images.SetKeyName(2, "First.png");
-         this.imgListTreeView.Images.SetKeyName(3, "Second.png");
-         this.imgListTreeView.Images.SetKeyName(4, "third.png");
-         this.imgListTreeView.Images.SetKeyName(5, "poop.png");
          // 
          // Form1
          // 
