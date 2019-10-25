@@ -229,6 +229,7 @@
          this.tvwProvas.Size = new System.Drawing.Size(229, 322);
          this.tvwProvas.TabIndex = 6;
          this.tvwProvas.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.tvwProvas_NodeMouseHover);
+         this.tvwProvas.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwProvas_AfterSelect);
          // 
          // imgListTreeView
          // 
