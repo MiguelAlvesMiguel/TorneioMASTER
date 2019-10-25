@@ -184,6 +184,7 @@
             this.btnEliminar.TabIndex = 6;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // grbVista
             // 
@@ -255,6 +256,7 @@
             this.lsvBoard.TabIndex = 10;
             this.lsvBoard.UseCompatibleStateImageBehavior = false;
             this.lsvBoard.View = System.Windows.Forms.View.Details;
+            this.lsvBoard.SelectedIndexChanged += new System.EventHandler(this.lsvBoard_SelectedIndexChanged);
             // 
             // Atleta
             // 

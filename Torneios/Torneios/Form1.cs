@@ -46,15 +46,15 @@ namespace Torneios
                 }
             btnInserir.Enabled = false;
         }
-        public int IsInList()
+        public int IsInList(string nome, string prova)
         {
-            foreach (TreeNode Parent in tvwProvas.Nodes)
-                if (Parent.Text == cbbProva.SelectedItem.ToString())
-                    foreach (TreeNode Child in Parent.Nodes)
-                        if (Child.Text == (txtNome.Text + " " + txtApelido.Text))
-                            return 1;
+            for (int idx = 0; idx < lsvBoard.Items.Count; idx++)
+            {
+                if (lsvBoard.Items[idx].Text == nome && lsvBoard.Items[idx].SubItems[1].Text == prova)
+                    return idx;
+            }
 
-            return 0;
+            return -1;
         }
         public TreeNode ProcProva()
         {
@@ -328,6 +328,47 @@ namespace Torneios
             }
         }
 
+        public void UpdateSomatorio()
+        {
+            int idx, idx2, soma;
+            string idxNome, idx2Nome;
+
+            for (idx = 0; idx < lsvBoard.Items.Count; idx++)
+                lsvBoard.Items[idx].Tag = 0;
+
+
+            for (idx = 0; idx < lsvBoard.Items.Count; idx++)
+            {
+                if (lsvBoard.Items[idx].Tag.Equals(0))
+                {
+                    idxNome = lsvBoard.Items[idx].Text;
+                    lsvBoard.Items[idx].SubItems[4] = lsvBoard.Items[idx].SubItems[3];
+                    lsvBoard.Items[idx].Tag = 1;
+                    soma = Convert.ToInt32(lsvBoard.Items[idx].SubItems[4].Text); 
+
+                    for (idx2 = idx + 1; idx2 < lsvBoard.Items.Count; idx2++)
+                    {
+                        idx2Nome = lsvBoard.Items[idx2].Text;
+
+                        if (idxNome == idx2Nome)
+                        {
+                            soma += Convert.ToInt32(lsvBoard.Items[idx2].SubItems[3]);
+                            lsvBoard.Items[idx].SubItems[4].Text = soma.ToString();
+                            lsvBoard.Items[idx].Tag = 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void ResetCampos()
+        {
+            txtNome.Text = "";
+            txtApelido.Text = "";
+            numDistancia.Value = 0;
+            numTempo.Value = 0;
+            txtNome.Focus();
+        }
         //Fim das Funções
 
         private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
@@ -373,16 +414,29 @@ namespace Torneios
 
         private void btnInserir_Click(object sender, EventArgs e)
         {
-            int soma = 0;
+            int soma = 0 , idxRegisto = -1;
+            double P;
+
             TreeNode provaNova = new TreeNode(),
                      pessoa = new TreeNode(),
                      prova = new TreeNode();
 
 
-            if (IsInList() == 1)
+            if (IsInList(txtNome.Text + " " + txtApelido.Text, cbbProva.Text) != -1)
             {
-                MessageBox.Show("Esse Registo já existe!", "ERRO", MessageBoxButtons.OK);
-                return;
+                DialogResult res;
+                res = MessageBox.Show("O par atleta/prova que selecionou já foi inserido.\n\nDeseja substituir o registo?",
+                    "Decatlo - Registo Repetido", MessageBoxButtons.YesNo);
+
+                if (res == DialogResult.No)
+                {
+                    ResetCampos();
+                    return;
+                }
+                else
+                {
+                    idxRegisto = IsInList(txtNome.Text + " " + txtApelido.Text, cbbProva.Text);
+                }
             }
             if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)        
                 pessoa.Tag = numTempo.Value;
@@ -417,86 +471,123 @@ namespace Torneios
 
             // 4. Inserir na list view
 
-            //Atleta
-            ListViewItem lvi = new ListViewItem();
-
-            lvi.Text = txtNome.Text + ' ' + txtApelido.Text;
-
-            //Prova
-            ListViewItem.ListViewSubItem lvsi = new ListViewItem.ListViewSubItem();
-
-            lvsi.Text = cbbProva.Text;
-            lvi.SubItems.Add(lvsi);
-
-            //Marca
-            lvsi = new ListViewItem.ListViewSubItem();
-
-            switch (TipoProva())
+            if (idxRegisto == -1)
             {
-                case 0:
-                    double tempo = Convert.ToDouble(numTempo.Value);
-                    if (tempo >= 60)
+
+                //Atleta
+
+                ListViewItem lvi = new ListViewItem();
+
+                lvi.Text = txtNome.Text + ' ' + txtApelido.Text;
+
+                //Prova
+                ListViewItem.ListViewSubItem lvsi = new ListViewItem.ListViewSubItem();
+
+                lvsi.Text = cbbProva.Text;
+                lvi.SubItems.Add(lvsi);
+
+                //Marca
+                lvsi = new ListViewItem.ListViewSubItem();
+
+                switch (TipoProva())
+                {
+                    case 0:
+                        double tempo = Convert.ToDouble(numTempo.Value);
+                        if (tempo >= 60)
+                        {
+                            int min = (int)tempo / 60;
+                            tempo -= min * 60;
+                            lvsi.Text = min.ToString() + ':';
+                        }
+                        lvsi.Text += tempo.ToString() + " s";
+                        break;
+                    case 1:
+                    case 2:
+                        lvsi.Text = numDistancia.Value.ToString() + " m";
+                        break;
+                    default:
+                        break;
+                }
+
+                if (lvsi.Text.Equals("-1 s") == true)
+                    lvsi.Text = "Inválido";
+
+                lvi.SubItems.Add(lvsi);
+
+                //Pontos
+                lvsi = new ListViewItem.ListViewSubItem();
+
+                
+                if (TipoProva() == 0)
+                {
+                    P = (double)numTempo.Value;
+                }
+                else
+                {
+                    P = (double)numDistancia.Value;
+                }
+                soma = CalcPontos(cbbProva.SelectedIndex, P);
+                lvsi.Text = Convert.ToString(soma);
+
+
+                lvi.SubItems.Add(lvsi);
+
+                //Somatório
+
+                lvsi = new ListViewItem.ListViewSubItem();
+
+                for (int idx = 0; idx < lsvBoard.Items.Count; idx++)
+                {
+                    if (lsvBoard.Items[idx].Text == lvi.Text)
                     {
-                        int min = (int)tempo / 60;
-                        tempo -= min * 60;
-                        lvsi.Text = min.ToString() + ':';
+                        soma += Convert.ToInt32(lsvBoard.Items[idx].SubItems[3].Text);
                     }
-                    lvsi.Text += tempo.ToString() + " s";
-                    break;
-                case 1:
-                case 2:
-                    lvsi.Text = numDistancia.Value.ToString() + " m";
-                    break;
-                default:
-                    break;
-            }
+                }
+                lvsi.Text = soma.ToString();
+                lvi.SubItems.Add(lvsi);
 
-            if (lvsi.Text.Equals("-1 s") == true)
-                lvsi.Text = "Inválido";
-
-            lvi.SubItems.Add(lvsi);
-
-            //Pontos
-            lvsi = new ListViewItem.ListViewSubItem();
-
-            double P;
-            if (TipoProva() == 0)
-            {
-                P = (double)numTempo.Value;
+                lsvBoard.Items.Add(lvi);         
             }
             else
             {
-                P = (double)numDistancia.Value;
-            }
-            soma = CalcPontos(cbbProva.SelectedIndex, P);
-            lvsi.Text = Convert.ToString(soma);
-
-
-            lvi.SubItems.Add(lvsi);
-
-            //Somatório
-
-            lvsi = new ListViewItem.ListViewSubItem();
-
-            for (int idx = 0; idx < lsvBoard.Items.Count; idx++)
-            {
-                if (lsvBoard.Items[idx].Text == lvi.Text)
+                switch (TipoProva())
                 {
-                    soma += Convert.ToInt32(lsvBoard.Items[idx].SubItems[3].Text);
+                    case 0:
+                        double tempo = Convert.ToDouble(numTempo.Value);
+                        lsvBoard.Items[idxRegisto].SubItems[2].Text = "";
+                        if (tempo >= 60)
+                        {
+                            int min = (int)tempo / 60;
+                            tempo -= min * 60;
+                            lsvBoard.Items[idxRegisto].SubItems[2].Text = min.ToString() + ':';
+                        }
+                        lsvBoard.Items[idxRegisto].SubItems[2].Text += tempo.ToString() + " s";
+                        break;
+                    case 1:
+                    case 2:
+                        lsvBoard.Items[idxRegisto].SubItems[2].Text = numDistancia.Value.ToString() + " m";
+                        break;
+                    default:
+                        break;
                 }
+
+                if (lsvBoard.Items[idxRegisto].SubItems[2].Text.Equals("-1 s") == true)
+                    lsvBoard.Items[idxRegisto].SubItems[2].Text = "Inválido";
+
+                if (TipoProva() == 0)
+                {
+                    P = (double)numTempo.Value;
+                }
+                else
+                {
+                    P = (double)numDistancia.Value;
+                }
+                soma = CalcPontos(cbbProva.SelectedIndex, P);
+                lsvBoard.Items[idxRegisto].SubItems[3].Text = soma.ToString();
+                UpdateSomatorio();
             }
-            lvsi.Text = soma.ToString();
-            lvi.SubItems.Add(lvsi);
-
-            lsvBoard.Items.Add(lvi);
+            ResetCampos();
             UpdateColor();
-
-            //Reset dos campos
-            txtNome.Text = "";
-            txtApelido.Text = "";
-            numDistancia.Value = 0;
-            numTempo.Value = 0;
-            txtNome.Focus();
         }
 
         private void tvwProvas_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
@@ -514,5 +605,25 @@ namespace Torneios
 
         }
 
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            int idx;
+            for (idx = lsvBoard.SelectedIndices.Count - 1; idx >= 0; idx--)
+            {
+                lsvBoard.Items.RemoveAt(lsvBoard.SelectedIndices[idx]);
+            }
+            UpdateSomatorio();
+            UpdateColor();
+           
+            btnEliminar.Enabled = false;
+        }
+
+        private void lsvBoard_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lsvBoard.SelectedItems.Count > 0)
+                btnEliminar.Enabled = true;
+            else
+                btnEliminar.Enabled = false;
+        }
     }
 }
