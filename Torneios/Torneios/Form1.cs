@@ -490,10 +490,13 @@ namespace Torneios
 
             lsvBoard.Items.Add(lvi);
             UpdateColor();
+
+            //Reset dos campos
             txtNome.Text = "";
             txtApelido.Text = "";
             numDistancia.Value = 0;
             numTempo.Value = 0;
+            txtNome.Focus();
         }
 
         private void tvwProvas_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
