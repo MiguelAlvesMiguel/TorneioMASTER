@@ -603,16 +603,8 @@ namespace Torneios
             {
                 provaNova.Text = cbbProva.SelectedItem.ToString();
 
-                if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)        
-                {
-                    provaNova.ImageIndex = 0;
-                    provaNova.SelectedImageIndex = 0;
-                }
-                else
-                {
-                    provaNova.ImageIndex = 1;
-                    provaNova.SelectedImageIndex = 1;
-                }
+                provaNova.ImageIndex = cbbProva.SelectedIndex + 6;
+                provaNova.SelectedImageIndex = cbbProva.SelectedIndex + 6;
                 tvwProvas.Nodes.Add(provaNova);
                 provaNova.Nodes.Add(pessoa);
             }
@@ -697,7 +689,8 @@ namespace Torneios
                 }
                 lvsi.Text = soma.ToString();
                 lvi.SubItems.Add(lvsi);
-
+                lvi.ImageIndex = cbbProva.SelectedIndex + 6;
+                
                 lsvBoard.Items.Add(lvi);         
             }
             else
