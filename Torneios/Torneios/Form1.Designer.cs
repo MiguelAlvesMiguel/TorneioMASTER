@@ -171,6 +171,7 @@
             this.btnClassificação.TabIndex = 4;
             this.btnClassificação.Text = "Classificação";
             this.btnClassificação.UseVisualStyleBackColor = true;
+            this.btnClassificação.Click += new System.EventHandler(this.BtnClassificação_Click);
             // 
             // btnInserir
             // 
