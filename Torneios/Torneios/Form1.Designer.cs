@@ -125,6 +125,11 @@
             this.numDistancia.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.numDistancia.DecimalPlaces = 2;
             this.numDistancia.Location = new System.Drawing.Point(279, 82);
+            this.numDistancia.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.numDistancia.Minimum = new decimal(new int[] {
             1,
             0,
@@ -141,6 +146,11 @@
             this.numTempo.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.numTempo.DecimalPlaces = 2;
             this.numTempo.Location = new System.Drawing.Point(366, 82);
+            this.numTempo.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.numTempo.Minimum = new decimal(new int[] {
             1,
             0,

@@ -578,7 +578,7 @@ namespace Torneios
             {
                 DialogResult res;
                 res = MessageBox.Show("O par atleta/prova que selecionou já foi inserido.\n\nDeseja substituir o registo?",
-                    "Decatlo - Registo Repetido", MessageBoxButtons.YesNo);
+                    "Provas Decatlo - Registo Repetido", MessageBoxButtons.YesNo);
 
                 if (res == DialogResult.No)
                 {
@@ -615,7 +615,7 @@ namespace Torneios
 
             // 4. Inserir na list view
 
-            if (idxRegisto == -1)
+            if (idxRegisto == -1) // Inserir registo
             {
 
                 //Atleta
@@ -693,7 +693,7 @@ namespace Torneios
                 
                 lsvBoard.Items.Add(lvi);         
             }
-            else
+            else //Atualizar registo
             {
                 switch (TipoProva())
                 {
