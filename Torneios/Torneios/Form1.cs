@@ -778,8 +778,54 @@ namespace Torneios
 
         private void BtnClassificação_Click(object sender, EventArgs e)
         {
+            TreeNode prova;
+            int idx, idx2, bestMarkIdx;
+            char tipoProva;
+            
+            if (cbbProva.Text == "")
+            {
+                MessageBox.Show("Nenhuma prova selecionada!", "Provas-Decatlo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                if ((prova = ProcProva()) == null) //Se não for encontrada a modalidade selecionada
+                {
+                    MessageBox.Show("A prova selecionada ainda não tem registos", "Provas-Decatlo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    bool[] inserted = new bool[prova.Nodes.Count];
+                    string msg = cbbProva.Text + " - Classificações" + ":\n\n";
+                    if (TipoProva() == 0)
+                        tipoProva = 's';
+                    else
+                        tipoProva = 'm';
 
+                    for (idx = 0; idx < prova.Nodes.Count;)
+                    {
+                        bestMarkIdx = idx;
+                        if (inserted[idx] == false)
+                        {
+                            for (idx2 = idx; idx2 < prova.Nodes.Count; idx2++)
+                            {
+
+                                if (((Convert.ToDouble(prova.Nodes[idx2].Tag) < Convert.ToDouble(prova.Nodes[idx].Tag) && tipoProva == 's') || //Provas de tempo
+                                    (Convert.ToDouble(prova.Nodes[idx2].Tag) > Convert.ToDouble(prova.Nodes[idx].Tag) && tipoProva == 'm')) && inserted[idx2] == false) //Provas de distância
+                                {
+                                    bestMarkIdx = idx2;
+                                }
+                            }
+                            inserted[bestMarkIdx] = true;
+                            msg += "    " + prova.Nodes[bestMarkIdx].Text + ": "+ prova.Nodes[bestMarkIdx].Tag + ' ' + tipoProva + "\n";
+                        }
+                        if (bestMarkIdx == idx)
+                        {
+                            idx++;
+                        }
+                    }
+                    MessageBox.Show(msg, "Provas-Decatlo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
     }
 }
-
