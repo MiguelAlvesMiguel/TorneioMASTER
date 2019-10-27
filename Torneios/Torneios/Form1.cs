@@ -826,6 +826,8 @@ namespace Torneios
                     else
                         tipoProva = 'm';
 
+
+
                     for (idx = 0; idx < prova.Nodes.Count;)
                     {
                         bestMarkIdx = idx;
