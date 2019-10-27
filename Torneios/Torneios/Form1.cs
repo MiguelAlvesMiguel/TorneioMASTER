@@ -15,6 +15,8 @@ namespace Torneios
         public Form1()
         {
             InitializeComponent();
+            numDistancia.Controls[0].Enabled = false;
+            numTempo.Controls[0].Enabled = false;
         }
 
         //Inicio das funções
@@ -390,9 +392,20 @@ namespace Torneios
             else
             {
                 if (idxProva <= 3)
-                    return (int)(A * Math.Pow(B - P, C));
+                {
+                    if (B - P >= 0)
+                        return (int)(A * Math.Pow(B - P, C));
+                    else
+                        return 0;
+                }
                 else
-                    return (int)(A * Math.Pow(P - B, C));
+                {
+                    if (P - B >= 0)
+                        return (int)(A * Math.Pow(P - B, C));
+                    else
+                        return 0;
+                }
+
             }
         }
         public void UpdateColor()
@@ -536,14 +549,18 @@ namespace Torneios
             if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)
             {
                 numTempo.ReadOnly = false;
+                numTempo.Controls[0].Enabled = true;
                 numDistancia.Value = 0;
                 numDistancia.ReadOnly = true;
+                numDistancia.Controls[0].Enabled = false;
             }
             else
             {
                 numDistancia.ReadOnly = false;
+                numDistancia.Controls[0].Enabled = true;
                 numTempo.Value = 0;
                 numTempo.ReadOnly = true;
+                numTempo.Controls[0].Enabled = false;
             }
             ValBtnInserir();
         }
@@ -568,15 +585,22 @@ namespace Torneios
         {
             int soma = 0, idxRegisto = -1;
             double P;
+            DialogResult res;
 
             TreeNode provaNova = new TreeNode(),
                      pessoa = new TreeNode(),
                      prova = new TreeNode();
 
+            if (numDistancia.Value.Equals(-1) || numTempo.Value.Equals(-1))
+            {           
+                res = MessageBox.Show("Selecionou a marca -1 (marca inválida)\nQuer mesmo inserir o registo?", "Provas-Decatlo",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+                if (res == DialogResult.Cancel)
+                    return;
 
+            }
             if (IsInList(txtNome.Text + " " + txtApelido.Text, cbbProva.Text) != -1)
             {
-                DialogResult res;
                 res = MessageBox.Show("O par atleta/prova que selecionou já foi inserido.\n\nDeseja substituir o registo?",
                     "Provas Decatlo - Registo Repetido", MessageBoxButtons.YesNo);
 
@@ -620,6 +644,7 @@ namespace Torneios
 
                 //Atleta
 
+                
                 ListViewItem lvi = new ListViewItem();
 
                 lvi.Text = txtNome.Text + ' ' + txtApelido.Text;
@@ -653,9 +678,9 @@ namespace Torneios
                         break;
                 }
 
-                if (lvsi.Text.Equals("-1 s") == true)
-                    lvsi.Text = "Inválido";
-
+                if (lvsi.Text.Contains("-1") == true)             
+                    lvsi.Text = "Inválido";     
+             
                 lvi.SubItems.Add(lvsi);
 
                 //Pontos
