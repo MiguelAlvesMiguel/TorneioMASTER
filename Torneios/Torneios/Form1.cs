@@ -67,241 +67,222 @@ namespace Torneios
             return null;
         }
         public void GetClassifications()
-        {
-            bool BiggerWins;
-            TreeNode First, Second, Third;
-            First = Second = Third = new TreeNode();
-            double firstN, secondN, thirdN, FilhoN;
-            int cnt1, cnt2, cnt3;
+      {
+         bool BiggerWins;
+         TreeNode First, Second, Third;
+         First = Second = Third = new TreeNode();
+         double firstN, secondN, thirdN, FilhoN;
+         int cnt1, cnt2;
 
-            cnt1 = cnt2 = cnt3 = 0;
-            firstN = secondN = thirdN = FilhoN = 0;
+         cnt1 = cnt2 = 0;
+         firstN = secondN = thirdN = FilhoN = 0;
 
-            foreach (TreeNode Pai in tvwProvas.Nodes)
+         foreach (TreeNode Pai in tvwProvas.Nodes)
+         {
+            if (EntreAB(Pai.ImageIndex,6,9) == 1)
+               BiggerWins = false;
+            else
+               BiggerWins = true;
+            if (EntreAB(cbbProva.SelectedIndex, 1, 3) == 1)
+               First.Tag = Second.Tag = Third.Tag = 1001;
+            else
+               First.Tag = Second.Tag = Third.Tag = -2;
+            First = ReturnBest(Pai);
+            foreach (TreeNode Filho in Pai.Nodes)
             {
-                if (Pai.ImageIndex == 0)
-                    BiggerWins = false;
-                else
-                    BiggerWins = true;
+               if (BiggerWins == true)    //Num Distância
+               {
 
-                First.Tag = Second.Tag = Third.Tag = -2;
+                  firstN = Convert.ToDouble(First.Tag);
+                  secondN = Convert.ToDouble(Second.Tag);
+                  thirdN = Convert.ToDouble(Third.Tag);
+                  FilhoN = Convert.ToDouble(Filho.Tag);
 
-                First = ReturnBigger();
+                  if (FilhoN >= firstN){   //PARA A MEDALHA DE OURO                  
+                     if (FilhoN == firstN){ //Se for igual fica também com OURO                    
+                        Filho.ImageIndex = 2;
+                        Filho.SelectedImageIndex = 2;
+                        cnt1++;
+                        if (cnt1 >= 3){                      
+                           DownGrade(3);
+                           DownGrade(4);
+                        }
+                        
+                        continue;
+                     }
+                     else {    //Se for maior fica com ouro e quem tinha ouro fica com prata                     
+                        DownGrade(2);
 
-                foreach (TreeNode Filho in Pai.Nodes)
-                {
-
-                    if (BiggerWins == true)    //Num Distância
-                    {
-
+                        Filho.ImageIndex = 2;
+                        Filho.SelectedImageIndex = 2;
+                        cnt1++;
+                        //e quem tinha ouro fica com prata
+                        First = Filho;
                         firstN = Convert.ToDouble(First.Tag);
-                        secondN = Convert.ToDouble(Second.Tag);
-                        thirdN = Convert.ToDouble(Third.Tag);
-                        FilhoN = Convert.ToDouble(Filho.Tag);
-
-                        if (FilhoN >= firstN)   //PARA A MEDALHA DE OURO
+                        First.Tag = Convert.ToDouble(First.Tag);
+                        continue;
+                     }
+                  }
+                  if (FilhoN >= secondN && FilhoN < firstN && FilhoN > thirdN) //PARA E MEDALHA DE PRATA
+                  {
+                     if (cnt1 >= 3) //Se houver 3 ou mais medalhas de ouro mais ninguem ganha nada
+                     {
+                        Filho.ImageIndex = 5;
+                        Filho.SelectedImageIndex = 5;
+                        continue;
+                     }
+                     if (FilhoN == secondN)
+                     {
+                        if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
                         {
-                            if (FilhoN == firstN) //Se for igual fica também com OURO
-                            {
-                                Filho.ImageIndex = 2;
-                                Filho.SelectedImageIndex = 2;
-                                cnt1++;
-                                if (cnt1 >= 3)
-                                {
-                                    DownGrade(3);
-                                    DownGrade(4);
-                                }
-                                continue;
-                            }
-                            else     //Se for maior fica com ouro e quem tinha ouro fica com prata
-                            {
-                                DownGrade(2);
-
-                                Filho.ImageIndex = 2;
-                                Filho.SelectedImageIndex = 2;
-                                cnt1++;
-
-                                //e quem tinha ouro fica com prata
-
-                                First = Filho;
-                                firstN = Convert.ToDouble(First.Tag);
-                                First.Tag = Convert.ToDouble(First.Tag);
-                                continue;
-                            }
+                           Filho.ImageIndex = 4;
+                           Filho.SelectedImageIndex = 4;
+                           continue;
                         }
-                        if (FilhoN >= secondN && FilhoN < firstN && FilhoN > thirdN) //PARA E MEDALHA DE PRATA
+                        //Se só houver 1 medalha de ouro fica com a prata
+                        Filho.ImageIndex = 3;
+                        Filho.SelectedImageIndex = 3;
+                        cnt2++;
+                        if ((cnt1 + cnt2) >= 3)
+                           DownGrade(4);
+                        continue;
+                     }
+                     if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
+                     {
+                        DownGrade(4);
+                        Filho.ImageIndex = 4;
+                        Filho.SelectedImageIndex = 4;
+                        continue;
+                     }
+                     DownGrade(3); //Downgrade em quem estava em segundo
+                     Filho.ImageIndex = 3;
+                     Filho.SelectedImageIndex = 3;
+                     cnt2++;
+
+
+                     Second = Filho;
+                     secondN = Convert.ToDouble(Second.Tag);
+                     //thirdN = Convert.ToDouble(Third.Tag);
+                     continue;
+                  }
+                  if (FilhoN > thirdN && FilhoN < secondN)  //PARA A MEDALHA DE BRONZE
+                  {
+                     if ((cnt1 + cnt2) >= 3)
+                     {
+                        Filho.ImageIndex = 5;
+                        Filho.SelectedImageIndex = 5;
+                        continue;
+                     }
+                     Filho.ImageIndex = 4;
+                     Filho.SelectedImageIndex = 4;
+                     Third = Filho;
+                     thirdN = Convert.ToDouble(Third.Tag);
+                  }
+               }
+               else //Se for de tempo mudar os sinais
+               {
+
+                  firstN = Convert.ToDouble(First.Tag);
+                  secondN = Convert.ToDouble(Second.Tag);
+                  thirdN = Convert.ToDouble(Third.Tag);
+                  FilhoN = Convert.ToDouble(Filho.Tag);
+
+                  if (FilhoN <= firstN)   //PARA A MEDALHA DE OURO
+                  {
+                     if (FilhoN == firstN) //Se for igual fica também com OURO
+                     {
+                        Filho.ImageIndex = 2;
+                        Filho.SelectedImageIndex = 2;
+                        cnt1++;
+                        if (cnt1 >= 3)
                         {
-                            if (cnt1 >= 3) //Se houver 3 ou mais medalhas de ouro mais ninguem ganha nada
-                            {
-                                Filho.ImageIndex = 5;
-                                Filho.SelectedImageIndex = 5;
-                                continue;
-                            }
-
-
-                            if (FilhoN == secondN)
-                            {
-                                if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
-                                {
-                                    Filho.ImageIndex = 4;
-                                    Filho.SelectedImageIndex = 4;
-                                    continue;
-                                }
-
-                                //Se só houver 1 medalha de ouro fica com a prata
-                                Filho.ImageIndex = 3;
-                                Filho.SelectedImageIndex = 3;
-                                cnt2++;
-                                if ((cnt1 + cnt2) >= 3)
-                                    DownGrade(4);
-
-                                continue;
-                            }
-                            if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
-                            {
-                                DownGrade(4);
-                                Filho.ImageIndex = 4;
-                                Filho.SelectedImageIndex = 4;
-                                continue;
-                            }
-
-                            DownGrade(3); //Downgrade em quem estava em segundo
-                            Filho.ImageIndex = 3;
-                            Filho.SelectedImageIndex = 3;
-                            cnt2++;
-
-
-                            Second = Filho;
-                            secondN = Convert.ToDouble(Second.Tag);
-                            //thirdN = Convert.ToDouble(Third.Tag);
-
-                            continue;
+                           DownGrade(3);
+                           DownGrade(4);
                         }
+                        continue;
+                     }
+                     else     //Se for melhor fica com ouro e quem tinha ouro fica com prata
+                     {
+                        DownGrade(2);
 
-                        if (FilhoN > thirdN && FilhoN < secondN)  //PARA A MEDALHA DE BRONZE
-                        {
-                            if ((cnt1 + cnt2) >= 3)
-                            {
-                                Filho.ImageIndex = 5;
-                                Filho.SelectedImageIndex = 5;
-                                continue;
-                            }
-                            Filho.ImageIndex = 4;
-                            Filho.SelectedImageIndex = 4;
-                            Third = Filho;
-                            thirdN = Convert.ToDouble(Third.Tag);
-                        }
+                        Filho.ImageIndex = 2;
+                        Filho.SelectedImageIndex = 2;
+                        cnt1++;
 
-                    }
+                        //e quem tinha ouro fica com prata
 
-                    else //Se for de tempo mudar os sinais
-                    {
-
+                        First = Filho;
                         firstN = Convert.ToDouble(First.Tag);
-                        secondN = Convert.ToDouble(Second.Tag);
-                        thirdN = Convert.ToDouble(Third.Tag);
-                        FilhoN = Convert.ToDouble(Filho.Tag);
+                        First.Tag = Convert.ToDouble(First.Tag);
+                        continue;
+                     }
+                  }
+                  if (FilhoN <= secondN && FilhoN > firstN && FilhoN < thirdN) //PARA E MEDALHA DE PRATA
+                  {
+                     if (cnt1 >= 3) //Se houver 3 ou mais medalhas de ouro mais ninguem ganha nada
+                     {
+                        Filho.ImageIndex = 5;
+                        Filho.SelectedImageIndex = 5;
+                        continue;
+                     }
 
-                        if (FilhoN <= firstN)   //PARA A MEDALHA DE OURO
+
+                     if (FilhoN == secondN)
+                     {
+                        if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
                         {
-                            if (FilhoN == firstN) //Se for igual fica também com OURO
-                            {
-                                Filho.ImageIndex = 2;
-                                Filho.SelectedImageIndex = 2;
-                                cnt1++;
-                                if (cnt1 >= 3)
-                                {
-                                    DownGrade(3);
-                                    DownGrade(4);
-                                }
-                                continue;
-                            }
-                            else     //Se for maior fica com ouro e quem tinha ouro fica com prata
-                            {
-                                DownGrade(2);
-
-                                Filho.ImageIndex = 2;
-                                Filho.SelectedImageIndex = 2;
-                                cnt1++;
-
-                                //e quem tinha ouro fica com prata
-
-                                First = Filho;
-                                firstN = Convert.ToDouble(First.Tag);
-                                First.Tag = Convert.ToDouble(First.Tag);
-                                continue;
-                            }
+                           Filho.ImageIndex = 4;
+                           Filho.SelectedImageIndex = 4;
+                           continue;
                         }
-                        if (FilhoN <= secondN && FilhoN > firstN && FilhoN < thirdN) //PARA E MEDALHA DE PRATA
-                        {
-                            if (cnt1 >= 3) //Se houver 3 ou mais medalhas de ouro mais ninguem ganha nada
-                            {
-                                Filho.ImageIndex = 5;
-                                Filho.SelectedImageIndex = 5;
-                                continue;
-                            }
+                        //Se só houver 1 medalha de ouro fica com a prata
+                        Filho.ImageIndex = 3;
+                        Filho.SelectedImageIndex = 3;
+                        cnt2++;
+                        if ((cnt1 + cnt2) >= 3)
+                           DownGrade(4);
 
+                        continue;
+                     }
+                     if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
+                     {
+                        DownGrade(4);
+                        Filho.ImageIndex = 4;
+                        Filho.SelectedImageIndex = 4;
+                        continue;
+                     }
 
-                            if (FilhoN == secondN)
-                            {
-                                if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
-                                {
-                                    Filho.ImageIndex = 4;
-                                    Filho.SelectedImageIndex = 4;
-                                    continue;
-                                }
+                     DownGrade(3); //Downgrade em quem estava em segundo
+                     Filho.ImageIndex = 3;
+                     Filho.SelectedImageIndex = 3;
+                     cnt2++;
 
-                                //Se só houver 1 medalha de ouro fica com a prata
-                                Filho.ImageIndex = 3;
-                                Filho.SelectedImageIndex = 3;
-                                cnt2++;
-                                if ((cnt1 + cnt2) >= 3)
-                                    DownGrade(4);
+                     Second = Filho;
+                     secondN = Convert.ToDouble(Second.Tag);
+                     //thirdN = Convert.ToDouble(Third.Tag);
 
-                                continue;
-                            }
-                            if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
-                            {
-                                DownGrade(4);
-                                Filho.ImageIndex = 4;
-                                Filho.SelectedImageIndex = 4;
-                                continue;
-                            }
+                     continue;
+                  }
 
-                            DownGrade(3); //Downgrade em quem estava em segundo
-                            Filho.ImageIndex = 3;
-                            Filho.SelectedImageIndex = 3;
-                            cnt2++;
+                  if (FilhoN < thirdN && FilhoN > secondN)  //PARA A MEDALHA DE BRONZE
+                  {
+                     if ((cnt1 + cnt2) >= 3)
+                     {
+                        Filho.ImageIndex = 5;
+                        Filho.SelectedImageIndex = 5;
+                        continue;
+                     }
+                     Filho.ImageIndex = 4;
+                     Filho.SelectedImageIndex = 4;
+                     Third = Filho;
+                     thirdN = Convert.ToDouble(Third.Tag);
+                  }
 
-
-                            Second = Filho;
-                            secondN = Convert.ToDouble(Second.Tag);
-                            //thirdN = Convert.ToDouble(Third.Tag);
-
-                            continue;
-                        }
-
-                        if (FilhoN < thirdN && FilhoN > secondN)  //PARA A MEDALHA DE BRONZE
-                        {
-                            if ((cnt1 + cnt2) >= 3)
-                            {
-                                Filho.ImageIndex = 5;
-                                Filho.SelectedImageIndex = 5;
-                                continue;
-                            }
-                            Filho.ImageIndex = 4;
-                            Filho.SelectedImageIndex = 4;
-                            Third = Filho;
-                            thirdN = Convert.ToDouble(Third.Tag);
-                        }
-
-                    }
-
-                }
+               }
 
             }
-
-        }
+         }
+      }
         public int TipoProva()
         {
             if (cbbProva.Text.IndexOf("Corrida") != -1)
@@ -518,25 +499,69 @@ namespace Torneios
                             Child.SelectedImageIndex++;
                         }
         }
-        public TreeNode ReturnBigger()
-        {
-            TreeNode maior = new TreeNode();
-            if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se for de tempo
-                maior.Tag = 1000;
-            else
-                maior.Tag = -2;
+        public TreeNode ReturnBest(TreeNode Pai)
+      {
+         bool IsTempo = false;
+         TreeNode melhor = new TreeNode();
+         if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se for de tempo
+         {
+            IsTempo = true;
+            melhor.Tag = 1001;
+         }
+         else
+         {
+            IsTempo = false;
+            melhor.Tag = -2;
+         }
+         foreach (TreeNode Child in Pai.Nodes)
+            switch (IsTempo)
+            {
+               case true:
+                  if (Convert.ToDecimal(Child.Tag) < Convert.ToDecimal(melhor.Tag))
+                     melhor = Child;
+                  break;
+               case false:
+                  if (Convert.ToDecimal(Child.Tag) > Convert.ToDecimal(melhor.Tag))
+                     melhor = Child;
+                  break;
+            }
 
-            foreach (TreeNode Parent in tvwProvas.Nodes)
-                if (Parent.Text == cbbProva.SelectedItem.ToString())
-                    foreach (TreeNode Child in Parent.Nodes)
-                        if ((Convert.ToDouble(Child.Tag)) > (Convert.ToDouble(maior.Tag)))
-                            maior = Child;
+         return melhor;
+      }
+        public TreeNode ReturnNode()
+      {
+         foreach (TreeNode Parent in tvwProvas.Nodes)
+            foreach (TreeNode Child in Parent.Nodes)
+               if (Child.Text == txtNome.Text + ' ' + txtApelido.Text && Parent.Text == cbbProva.SelectedItem.ToString())
+                  return Child;
 
-            return maior;
-        }
-        //Fim das Funções
+         return null;
+      }
+        public TreeNode ReturnSelectedFromList(ListViewItem item)
+      {
+         foreach (TreeNode Parent in tvwProvas.Nodes)
+            foreach (TreeNode Child in Parent.Nodes)
+               if (Child.Text == item.Text && Child.Parent.Text == item.SubItems[1].Text)
+                  return Child;
 
-        private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
+         return null; //Logicamente Impossível
+      }
+        public void RemoveEmpty()
+      {
+         List<string > ToDelete = new List<string>();
+         int cnt;
+            foreach (TreeNode Pai in tvwProvas.Nodes)
+         {
+            Pai.Name = Pai.Text;
+               if (Pai.Nodes.Count == 0)
+                  ToDelete.Add(Pai.Text);
+         }
+         for (cnt = ToDelete.Count - 1; cnt >= 0; cnt--)
+            tvwProvas.Nodes.RemoveByKey(ToDelete[cnt]);
+      }
+      //Fim das Funções
+
+      private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = TextBoxVal(e);
         }
@@ -612,6 +637,7 @@ namespace Torneios
                 else
                 {
                     idxRegisto = IsInList(txtNome.Text + " " + txtApelido.Text, cbbProva.Text);
+                    tvwProvas.Nodes.Remove(ReturnNode());
                 }
             }
             if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)        
@@ -776,19 +802,27 @@ namespace Torneios
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            int idx;
-            for (idx = lsvBoard.SelectedIndices.Count - 1; idx >= 0; idx--)
-            {
-                lsvBoard.Items.RemoveAt(lsvBoard.SelectedIndices[idx]);
-            }
-            UpdateSomatorio();
-            UpdateColor();
+      {
+         int idx;
+         ListViewItem item = new ListViewItem();
 
-            btnEliminar.Enabled = false;
-        }
+         for (idx = lsvBoard.SelectedIndices.Count - 1; idx >= 0; idx--)
+         {
+            item = lsvBoard.Items[Convert.ToInt16(lsvBoard.SelectedIndices[idx])];
+            lsvBoard.Items.RemoveAt(lsvBoard.SelectedIndices[idx]);
+            tvwProvas.Nodes.Remove(ReturnSelectedFromList(item));  //Eliminar da treeview                 
+         }
 
-        private void lsvBoard_SelectedIndexChanged(object sender, EventArgs e)
+         GetClassifications();
+         RemoveEmpty();
+
+         UpdateSomatorio();
+         UpdateColor();
+
+         btnEliminar.Enabled = false;
+      }
+
+      private void lsvBoard_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lsvBoard.SelectedItems.Count > 0)
                 btnEliminar.Enabled = true;
