@@ -104,17 +104,12 @@ namespace Torneios
                                 Filho.ImageIndex = 2;
                                 Filho.SelectedImageIndex = 2;
                                 cnt1++;
-                        if (cnt1 >= 3)
-                        {
-                           DownGrade(3);
-                           DownGrade(4);
-                        }
-                        else if (cnt1 == 2) DownGrade(3);
-                        {
-                           
-                           continue;
-                        }                       
-                                
+                                if (cnt1 >= 3)
+                                {
+                                    DownGrade(3);
+                                    DownGrade(4);
+                                }
+                                continue;
                             }
                             else     //Se for maior fica com ouro e quem tinha ouro fica com prata
                             {
@@ -140,6 +135,8 @@ namespace Torneios
                                 Filho.SelectedImageIndex = 5;
                                 continue;
                             }
+
+
                             if (FilhoN == secondN)
                             {
                                 if (cnt1 == 2) //Se houver 2 medalhas de ouro o segundo fica com o bronze
@@ -524,31 +521,6 @@ namespace Torneios
 
             return maior;
         }
-        public TreeNode ReturnNode()
-      {
-         foreach (TreeNode Parent in tvwProvas.Nodes)
-            foreach (TreeNode Child in Parent.Nodes)
-               if (Child.Text == txtNome.Text + ' ' + txtApelido.Text && Parent.Text == cbbProva.SelectedItem.ToString() )
-                  return Child;
-
-         return null;
-      }
-        public TreeNode ReturnSelectedFromList(ListViewItem item)
-      {
-         foreach (TreeNode Parent in tvwProvas.Nodes)
-            foreach (TreeNode Child in Parent.Nodes)
-               if (Child.Text == item.Text && Child.Parent.Text == item.SubItems[1].Text)
-                  return Child;
-
-         return null; //Logicamente Impossível
-      }
-        public void RemoveEmpty()
-      {
-         foreach (TreeNode Pai in tvwProvas.Nodes)
-            if (Pai.Nodes.Count == 0)
-               tvwProvas.Nodes.Remove(Pai);
-
-      }
         //Fim das Funções
 
         private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
@@ -563,19 +535,15 @@ namespace Torneios
         {
             if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)
             {
-                numTempo.Increment = 1;
                 numTempo.ReadOnly = false;
                 numDistancia.Value = 0;
                 numDistancia.ReadOnly = true;
-                numDistancia.Increment = 0;
             }
             else
             {
-                numDistancia.Increment = 1;
                 numDistancia.ReadOnly = false;
                 numTempo.Value = 0;
                 numTempo.ReadOnly = true;
-                numTempo.Increment = 0;
             }
             ValBtnInserir();
         }
@@ -620,7 +588,6 @@ namespace Torneios
                 else
                 {
                     idxRegisto = IsInList(txtNome.Text + " " + txtApelido.Text, cbbProva.Text);
-                    tvwProvas.Nodes.Remove(ReturnNode()); //Apagar o node
                 }
             }
             if (EntreAB(cbbProva.SelectedIndex, 0, 3) == 1) //Se estiver selecionada uma prova de tempo (está por ordem)        
@@ -786,18 +753,10 @@ namespace Torneios
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             int idx;
-             ListViewItem item = new ListViewItem();
-
             for (idx = lsvBoard.SelectedIndices.Count - 1; idx >= 0; idx--)
             {
-               item = lsvBoard.Items[  Convert.ToInt16(lsvBoard.SelectedIndices[idx]) ];
-               lsvBoard.Items.RemoveAt(lsvBoard.SelectedIndices[idx]);               
-               tvwProvas.Nodes.Remove( ReturnSelectedFromList(item) );  //Eliminar da treeview                 
+                lsvBoard.Items.RemoveAt(lsvBoard.SelectedIndices[idx]);
             }
-
-            GetClassifications();
-            RemoveEmpty();
-
             UpdateSomatorio();
             UpdateColor();
 
