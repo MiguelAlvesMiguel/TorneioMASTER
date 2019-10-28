@@ -871,13 +871,16 @@ namespace Torneios
                             {
 
                                 if (((Convert.ToDouble(prova.Nodes[idx2].Tag) < Convert.ToDouble(prova.Nodes[idx].Tag) && tipoProva == 's') || //Provas de tempo
-                                    (Convert.ToDouble(prova.Nodes[idx2].Tag) > Convert.ToDouble(prova.Nodes[idx].Tag) && tipoProva == 'm')) && inserted[idx2] == false) //Provas de distância
+                                    (Convert.ToDouble(prova.Nodes[idx2].Tag) > Convert.ToDouble(prova.Nodes[idx].Tag) && tipoProva == 'm')) && inserted[idx2] == false ) //Provas de distância
                                 {
                                     bestMarkIdx = idx2;
                                 }
                             }
                             inserted[bestMarkIdx] = true;
-                            msg += "    " + prova.Nodes[bestMarkIdx].Text + ": "+ prova.Nodes[bestMarkIdx].Tag + ' ' + tipoProva + "\n";
+                            if (prova.Nodes[bestMarkIdx].Tag.ToString() != "-1")
+                            {
+                                msg += "    " + prova.Nodes[bestMarkIdx].Text + ": " + prova.Nodes[bestMarkIdx].Tag + ' ' + tipoProva + "\n";
+                            }
                         }
                         if (bestMarkIdx == idx)
                         {
@@ -887,6 +890,11 @@ namespace Torneios
                     MessageBox.Show(msg, "Provas-Decatlo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void btnFechar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
