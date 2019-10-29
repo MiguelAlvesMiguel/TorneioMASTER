@@ -550,7 +550,17 @@ namespace Torneios
 
             return null; //Logicamente Impossível
         }
-        public void RemoveEmpty()
+        public ListViewItem ReturnItemFromNode(TreeNode Melhor)
+      {
+         foreach (ListViewItem item in lsvBoard.Items)
+         {
+            if (item.SubItems[0].Text == Melhor.Text)
+               if (item.SubItems[1].Text == Melhor.Parent.Text)
+                  return item;
+         }
+         return null; //Logicamente impossível
+      }
+      public void RemoveEmpty()
         {
             List<string> ToDelete = new List<string>();
             int cnt;
@@ -796,22 +806,33 @@ namespace Torneios
             UpdateColor();
         }
 
-        private void tvwProvas_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
-        {
+      private void tvwProvas_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
+      {
+         int somatorio = 0;
+         var node = sender as TreeNode;   // O node que deu origem ao evento como TreeNode
 
-            var node = sender as TreeNode;   // O node que deu origem ao evento como TreeNode
+         if (e.Node.Nodes.Count > 0)
+         {
+            //Mostrar tooltip bom o melhor           //Devolver o item do melhor node e apanhar a sua marca
+            e.Node.ToolTipText = (ReturnItemFromNode(ReturnBest(e.Node))).SubItems[2].Text;
+            toolTipScore.Show(e.Node.ToolTipText, tvwProvas);
+         }
+         else
+         {     //Mostrar o somatório em todas as provas
+            e.Node.ToolTipText = "Somatório Total: ";
+            foreach (TreeNode Parent in tvwProvas.Nodes)
+               foreach (TreeNode Child in Parent.Nodes)
+                  if (Child.Text == e.Node.Text)
+                     somatorio += Convert.ToInt32((ReturnItemFromNode(e.Node)).SubItems[4].Text);
 
-            if (e.Node.Nodes.Count > 0)
-                return;
-            else
-            {
-                e.Node.ToolTipText = e.Node.Tag.ToString();
-                toolTipScore.Show(e.Node.Tag.ToString(), tvwProvas);
-            }
+            e.Node.ToolTipText = "Somatório Total: " + somatorio.ToString();
 
-        }
+            toolTipScore.Show(e.Node.ToolTipText, tvwProvas);
+         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+      }
+
+      private void btnEliminar_Click(object sender, EventArgs e)
         {
             int idx;
             ListViewItem item = new ListViewItem();
