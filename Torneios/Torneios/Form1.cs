@@ -992,6 +992,7 @@ namespace Torneios
       {
          ValBtnInserir();
          numTempo.Value =  Math.Round(numDistancia.Value, 2);
+         ;
       }
 
    }
