@@ -560,7 +560,7 @@ namespace Torneios
          }
          return null; //Logicamente impossível
       }
-      public void RemoveEmpty()
+        public void RemoveEmpty()
         {
             List<string> ToDelete = new List<string>();
             int cnt;
@@ -669,6 +669,7 @@ namespace Torneios
 
                 provaNova.ImageIndex = cbbProva.SelectedIndex + 6;
                 provaNova.SelectedImageIndex = cbbProva.SelectedIndex + 6;
+                
                 tvwProvas.Nodes.Add(provaNova);
                 provaNova.Nodes.Add(pessoa);
             }

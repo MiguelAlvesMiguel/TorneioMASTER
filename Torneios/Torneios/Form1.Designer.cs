@@ -44,6 +44,7 @@
             this.rdbÍcones = new System.Windows.Forms.RadioButton();
             this.rdbDetalhes = new System.Windows.Forms.RadioButton();
             this.tvwProvas = new System.Windows.Forms.TreeView();
+            this.imgListTreeView = new System.Windows.Forms.ImageList(this.components);
             this.lsvBoard = new System.Windows.Forms.ListView();
             this.Atleta = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Prova = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -56,7 +57,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.toolTipScore = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.imgListTreeView = new System.Windows.Forms.ImageList(this.components);
+            this.LargeImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numDistancia)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTempo)).BeginInit();
             this.grbVista.SuspendLayout();
@@ -245,6 +246,27 @@
             this.tvwProvas.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.tvwProvas_NodeMouseHover);
             this.tvwProvas.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwProvas_AfterSelect);
             // 
+            // imgListTreeView
+            // 
+            this.imgListTreeView.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgListTreeView.ImageStream")));
+            this.imgListTreeView.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgListTreeView.Images.SetKeyName(0, "clock.png");
+            this.imgListTreeView.Images.SetKeyName(1, "location.png");
+            this.imgListTreeView.Images.SetKeyName(2, "First.png");
+            this.imgListTreeView.Images.SetKeyName(3, "Second.png");
+            this.imgListTreeView.Images.SetKeyName(4, "third.png");
+            this.imgListTreeView.Images.SetKeyName(5, "poop.png");
+            this.imgListTreeView.Images.SetKeyName(6, "100m.png");
+            this.imgListTreeView.Images.SetKeyName(7, "400m.png");
+            this.imgListTreeView.Images.SetKeyName(8, "1500.png");
+            this.imgListTreeView.Images.SetKeyName(9, "110mBarreiras.png");
+            this.imgListTreeView.Images.SetKeyName(10, "saltoComprimento.png");
+            this.imgListTreeView.Images.SetKeyName(11, "lancamentoPeso.png");
+            this.imgListTreeView.Images.SetKeyName(12, "saltoAltura.png");
+            this.imgListTreeView.Images.SetKeyName(13, "lancamentoDisco.png");
+            this.imgListTreeView.Images.SetKeyName(14, "saltoVara.png");
+            this.imgListTreeView.Images.SetKeyName(15, "lancamentoDardo.png");
+            // 
             // lsvBoard
             // 
             this.lsvBoard.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -254,7 +276,7 @@
             this.Pontos,
             this.Somatório});
             this.lsvBoard.HideSelection = false;
-            this.lsvBoard.LargeImageList = this.imgListTreeView;
+            this.lsvBoard.LargeImageList = this.LargeImageList;
             this.lsvBoard.Location = new System.Drawing.Point(279, 132);
             this.lsvBoard.Name = "lsvBoard";
             this.lsvBoard.Size = new System.Drawing.Size(550, 322);
@@ -335,26 +357,26 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // imgListTreeView
+            // LargeImageList
             // 
-            this.imgListTreeView.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgListTreeView.ImageStream")));
-            this.imgListTreeView.TransparentColor = System.Drawing.Color.Transparent;
-            this.imgListTreeView.Images.SetKeyName(0, "clock.png");
-            this.imgListTreeView.Images.SetKeyName(1, "location.png");
-            this.imgListTreeView.Images.SetKeyName(2, "First.png");
-            this.imgListTreeView.Images.SetKeyName(3, "Second.png");
-            this.imgListTreeView.Images.SetKeyName(4, "third.png");
-            this.imgListTreeView.Images.SetKeyName(5, "poop.png");
-            this.imgListTreeView.Images.SetKeyName(6, "100m.png");
-            this.imgListTreeView.Images.SetKeyName(7, "400m.png");
-            this.imgListTreeView.Images.SetKeyName(8, "1500.png");
-            this.imgListTreeView.Images.SetKeyName(9, "110mBarreiras.png");
-            this.imgListTreeView.Images.SetKeyName(10, "saltoComprimento.png");
-            this.imgListTreeView.Images.SetKeyName(11, "lancamentoPeso.png");
-            this.imgListTreeView.Images.SetKeyName(12, "saltoAltura.png");
-            this.imgListTreeView.Images.SetKeyName(13, "lancamentoDisco.png");
-            this.imgListTreeView.Images.SetKeyName(14, "saltoVara.png");
-            this.imgListTreeView.Images.SetKeyName(15, "lancamentoDardo.png");
+            this.LargeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("LargeImageList.ImageStream")));
+            this.LargeImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.LargeImageList.Images.SetKeyName(0, "clock.png");
+            this.LargeImageList.Images.SetKeyName(1, "location.png");
+            this.LargeImageList.Images.SetKeyName(2, "First.png");
+            this.LargeImageList.Images.SetKeyName(3, "Second.png");
+            this.LargeImageList.Images.SetKeyName(4, "third.png");
+            this.LargeImageList.Images.SetKeyName(5, "poop.png");
+            this.LargeImageList.Images.SetKeyName(6, "100m.png");
+            this.LargeImageList.Images.SetKeyName(7, "400m.png");
+            this.LargeImageList.Images.SetKeyName(8, "1500.png");
+            this.LargeImageList.Images.SetKeyName(9, "110mBarreiras.png");
+            this.LargeImageList.Images.SetKeyName(10, "saltoComprimento.png");
+            this.LargeImageList.Images.SetKeyName(11, "lancamentoPeso.png");
+            this.LargeImageList.Images.SetKeyName(12, "saltoAltura.png");
+            this.LargeImageList.Images.SetKeyName(13, "lancamentoDisco.png");
+            this.LargeImageList.Images.SetKeyName(14, "saltoVara.png");
+            this.LargeImageList.Images.SetKeyName(15, "lancamentoDardo.png");
             // 
             // Form1
             // 
@@ -418,6 +440,7 @@
       private System.Windows.Forms.ImageList imgListTreeView;
       private System.Windows.Forms.ToolTip toolTipScore;
       private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-   }
+        private System.Windows.Forms.ImageList LargeImageList;
+    }
 }
 
