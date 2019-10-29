@@ -39,16 +39,17 @@ namespace Torneios
                 return 1;
         }
         public void ValBtnInserir()
-        {
-            if (txtNome.Text != "" && txtApelido.Text != "")  //Se as textbox's tiverem as 2 preenchidas
-                if (numDistancia.ReadOnly == false || numTempo.ReadOnly == false)
-                {
-                    btnInserir.Enabled = true;
-                    return;
-                }
-            btnInserir.Enabled = false;
-        }
-        public int IsInList(string nome, string prova)
+      {
+         if (txtNome.Text != "" && txtApelido.Text != "")  //Se as textbox's tiverem as 2 preenchidas
+            if (numDistancia.ReadOnly == false && numDistancia.Value != (decimal)0.00 || numTempo.ReadOnly == false && numTempo.Value != (decimal)0.00)
+            {
+               btnInserir.Enabled = true;
+               return;
+            }
+         btnInserir.Enabled = false;
+      }
+
+      public int IsInList(string nome, string prova)
         {
             for (int idx = 0; idx < lsvBoard.Items.Count; idx++)
             {
@@ -861,12 +862,6 @@ namespace Torneios
             else
                 btnEliminar.Enabled = false;
         }
-
-        private void tvwProvas_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
-        }
-
         private void BtnClassificação_Click(object sender, EventArgs e)
         {
             TreeNode prova;
@@ -962,9 +957,7 @@ namespace Torneios
             if (res == DialogResult.Yes)
                 Close();
         }
-
-       
-
+    
         private void RdbDetalhes_CheckedChanged(object sender, EventArgs e)
         {
             if (rdbDetalhes.Checked == true) //Vista Detalhes
@@ -987,5 +980,25 @@ namespace Torneios
                 }
             }
         }
-    }
+
+        private void numDistancia_ValueChanged(object sender, EventArgs e)
+      {
+         ValBtnInserir();
+      }
+
+      private void numDistancia_KeyDown(object sender, KeyEventArgs e)
+      {
+         ValBtnInserir();
+      }
+
+      private void numTempo_ValueChanged(object sender, EventArgs e)
+      {
+         ValBtnInserir();
+      }
+
+      private void numTempo_KeyDown(object sender, KeyEventArgs e)
+      {
+         ValBtnInserir();
+      }
+   }
 }
