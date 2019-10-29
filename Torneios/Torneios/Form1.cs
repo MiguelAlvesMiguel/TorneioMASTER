@@ -842,7 +842,7 @@ namespace Torneios
             for (idx = lsvBoard.SelectedIndices.Count - 1; idx >= 0; idx--)
             {
                 item = lsvBoard.Items[Convert.ToInt16(lsvBoard.SelectedIndices[idx])];
-                lsvBoard.Items.RemoveAt(lsvBoard.SelectedIndices[idx]);
+                lsvBoard.Items.RemoveAt(lsvBoard.SelectedIndices[idx]); //Eliminar da listview
                 tvwProvas.Nodes.Remove(ReturnSelectedFromList(item));  //Eliminar da treeview                 
             }
 
@@ -887,8 +887,6 @@ namespace Torneios
                     else
                         tipoProva = 'm';
 
-
-
                     for (idx = 0; idx < prova.Nodes.Count;)
                     {
                         bestMarkIdx = idx;
@@ -921,8 +919,8 @@ namespace Torneios
 
         private void btnFechar_Click(object sender, EventArgs e)
         {
-            int idx, idxBest;
-            string msg = "Tabela de Classificações:\n\n";
+            int idx, idxBest, length;
+            string msg = "Tabela de Classificações:\n\n", atleta;
             DialogResult res;
             for (idx = 0; idx < lsvBoard.Items.Count; idx++)
                 lsvBoard.Items[idx].Tag = 0;
@@ -948,8 +946,16 @@ namespace Torneios
                         if (lsvBoard.Items[idx].Text == lsvBoard.Items[idxBest].Text)
                             lsvBoard.Items[idx].Tag = 1;
                     }
-
-                    msg += "    " + lsvBoard.Items[idxBest].Text + ": " + lsvBoard.Items[idxBest].SubItems[4].Text + "\n";
+                    if (rdbÍcones.Checked == true)
+                    {
+                        length = lsvBoard.Items[idxBest].Text.Length - lsvBoard.Items[idxBest].Text.IndexOf(':');
+                        atleta = lsvBoard.Items[idxBest].Text.Substring(0, length);
+                    }
+                    else
+                    {
+                        atleta = lsvBoard.Items[idxBest].Text;
+                    }
+                    msg += "    " + atleta + ": " + lsvBoard.Items[idxBest].SubItems[4].Text + "\n";
                 }
             } while (idxBest != -1);
             msg += "\nQuer mesmo terminar a aplicação?";
@@ -991,8 +997,8 @@ namespace Torneios
       private void numTempo_ValueChanged(object sender, EventArgs e)
       {
          ValBtnInserir();
-         numTempo.Value =  Math.Round(numDistancia.Value, 2);
-         ;
+         numTempo.Value =  Math.Round(numTempo.Value, 2);
+         
       }
 
    }
