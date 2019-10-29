@@ -984,12 +984,14 @@ namespace Torneios
         private void numDistancia_ValueChanged(object sender, EventArgs e)
       {
          ValBtnInserir();
+         numDistancia.Value= Math.Round(numDistancia.Value,2);
       }
 
 
       private void numTempo_ValueChanged(object sender, EventArgs e)
       {
          ValBtnInserir();
+         numTempo.Value =  Math.Round(numDistancia.Value, 2);
       }
 
    }
