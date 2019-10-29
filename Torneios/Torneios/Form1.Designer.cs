@@ -143,7 +143,7 @@
          this.numDistancia.TabIndex = 3;
          this.numDistancia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
          this.numDistancia.ValueChanged += new System.EventHandler(this.numDistancia_ValueChanged);
-         this.numDistancia.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numDistancia_KeyDown);
+
          // 
          // numTempo
          // 
@@ -166,7 +166,7 @@
          this.numTempo.TabIndex = 3;
          this.numTempo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
          this.numTempo.ValueChanged += new System.EventHandler(this.numTempo_ValueChanged);
-         this.numTempo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numTempo_KeyDown);
+
          // 
          // btnClassificação
          // 

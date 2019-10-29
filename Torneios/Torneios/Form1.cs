@@ -986,19 +986,11 @@ namespace Torneios
          ValBtnInserir();
       }
 
-      private void numDistancia_KeyDown(object sender, KeyEventArgs e)
-      {
-         ValBtnInserir();
-      }
 
       private void numTempo_ValueChanged(object sender, EventArgs e)
       {
          ValBtnInserir();
       }
 
-      private void numTempo_KeyDown(object sender, KeyEventArgs e)
-      {
-         ValBtnInserir();
-      }
    }
 }
